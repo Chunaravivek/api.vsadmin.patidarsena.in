@@ -767,24 +767,24 @@ class DbHandler {
     public function getPunjabiTags() {
         $this->conn->query("SET NAMES utf8");
         $result = array();
-        $type_res = $this->conn->query("SELECT * FROM `punjabi_tag_types` WHERE `status` = 1 ORDER BY `order`");
+//        $type_res = $this->conn->query("SELECT * FROM `punjabi_tag_types` WHERE `status` = 1 ORDER BY `order`");
         
-        if ($type_res->num_rows > 0) {
+//        if ($type_res->num_rows > 0) {
             $i = 0;
-            while ($type = $type_res->fetch_assoc()) {
-                $type_id = $type["id"];
-                $result[$i] = $type;
-                $result[$i]["tags"] = array();
-                $video_res = $this->conn->query("SELECT * FROM `punjabi_tags` WHERE `status` = 1 AND `tag_type`=$type_id ORDER BY `order`");
+//            while ($type = $type_res->fetch_assoc()) {
+//                $type_id = $type["id"];
+//                $result[$i] = $type;
+//                $result[$i]["tags"] = array();
+                $video_res = $this->conn->query("SELECT * FROM `punjabi_tags` WHERE `status` = 1 ORDER BY `order`");
                 if ($video_res->num_rows > 0) {
                     while ($res = $video_res->fetch_assoc()) {
-                        $type = $res["tag_type_text"];
+//                        $type = $res["tag_type_text"];
                         $result[$i]["tags"][] = $res;
+                        $i++;
                     }
                 }
-                $i++;
-            }
-        }
+//            }
+//        }
         
         return $result;
     } 
@@ -792,27 +792,24 @@ class DbHandler {
     public function getGodTags() {
         $this->conn->query("SET NAMES utf8");
         $result = array();
-        $type_res = $this->conn->query("SELECT * FROM `god_tag_types` WHERE `status` = 1 ORDER BY `order`");
+//        $type_res = $this->conn->query("SELECT * FROM `punjabi_tag_types` WHERE `status` = 1 ORDER BY `order`");
         
-        if ($type_res->num_rows > 0) {
+//        if ($type_res->num_rows > 0) {
             $i = 0;
-            while ($type = $type_res->fetch_assoc()) {
-               
-                $type_id = $type["id"];
-                $result[$i] = $type;
-                $result[$i]["tags"] = array();
-                
-                $video_res = $this->conn->query("SELECT * FROM `god_tags` WHERE `status` = 1 AND `tag_type`= $type_id ORDER BY `order`");
+//            while ($type = $type_res->fetch_assoc()) {
+//                $type_id = $type["id"];
+//                $result[$i] = $type;
+//                $result[$i]["tags"] = array();
+                $video_res = $this->conn->query("SELECT * FROM `god_tags` WHERE `status` = 1 ORDER BY `order`");
                 if ($video_res->num_rows > 0) {
                     while ($res = $video_res->fetch_assoc()) {
-                      
-                        $type = $res["tag_type_text"];
+//                        $type = $res["tag_type_text"];
                         $result[$i]["tags"][] = $res;
+                        $i++;
                     }
                 }
-                $i++;
-            }
-        }
+//            }
+//        }
         return $result;
     } 
     
