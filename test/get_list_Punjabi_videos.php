@@ -1,6 +1,6 @@
 <?php
-header('Content-disposition: attachment; filename=file.json');
-header('Content-type: application/json');
+//header('Content-disposition: attachment; filename=file.json');
+//header('Content-type: application/json');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -23,7 +23,7 @@ $headers = array(
 
 $post_fields = array(
     "app_code" => 'eIoyV1',
-    "tag_id" => 3, 
+    "tag_id" => 8, 
     "limit" => 20, 
     "offset" => 0,
 );

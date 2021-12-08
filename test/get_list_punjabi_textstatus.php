@@ -21,7 +21,7 @@ $headers = array(
 
 $post_fields = array(
     "app_code" => 'eIoyV1',
-    "cat_id" => 1, 
+    "tag_id" => 10, 
     "order" => "desc", 
     "limit" => 10, 
     "offset" => 0

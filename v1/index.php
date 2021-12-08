@@ -482,13 +482,13 @@ function verifyRequiredParams($required_fields,$api = null) {
                     
                     $tag_data = $db->getPunjabiTagInfo($tag_id);
                     if(!empty($tag_data)) {
-                        $tag_name = $tag_data["tag"];
+                        $tag_name = $tag_data["name"];
                     }
-                    
                 } else {
                     $tag_name = "";
                 }
                 $total_count = $db->getPunjabiVideoCount($tag_name);
+               
                 if ($offset >= $total_count && $total_count != 0) {
                     $response["success"] = "0";
                     $response["error"] = "Sorry, Invalid value for offset";
@@ -817,10 +817,10 @@ function verifyRequiredParams($required_fields,$api = null) {
                 $order = 'desc';
             }
 
-            if($app->request->post('cat_id')) {
-                $cat_id = $app->request->post('cat_id');
+            if($app->request->post('tag_id')) {
+                $tag_id = $app->request->post('tag_id');
             } else {
-                $cat_id = 0;
+                $tag_id = 0;
             }
             
             $res = $db->isValidApi($apikey, $app_code);
@@ -831,7 +831,7 @@ function verifyRequiredParams($required_fields,$api = null) {
                 $response['data'] = [];
             } else {
                 // Limit Offset
-                $total_count = $db->getPunjabiTextCount($cat_id);
+                $total_count = $db->getPunjabiTextCount($tag_id);
                 
                 if ($offset >= $total_count) {
                     $response["success"] = "0";
@@ -840,7 +840,7 @@ function verifyRequiredParams($required_fields,$api = null) {
                     $response['data'] = [];
                 } else {
                     
-                    $result = $db->getPunjabiTextStatus($cat_id, $limit, $offset,  $order);
+                    $result = $db->getPunjabiTextStatus($tag_id, $limit, $offset,  $order);
                     
                     if (count($result) > 0 && !empty($result)) {
                         $response["success"] = "1";
@@ -1194,7 +1194,7 @@ function verifyRequiredParams($required_fields,$api = null) {
                     
                     $tag_data = $db->getPunjabiTagInfo($tag_id);
                     if(!empty($tag_data)) {
-                        $tag_name = $tag_data["tag"];
+                        $tag_name = $tag_data["name"];
                     }
                     
                 } else {

@@ -442,12 +442,25 @@ class DbHandler {
         $cond = " WHERE `status` = 1";
         if($tag != "") {
             $cond .= " AND `tags` Like '%$tag%'";
-        }            
+        }          
         $count_qry = "SELECT COUNT(*) as totalcount FROM `punjabi_videos` $cond";
+      
         $video_res = $this->conn->query($count_qry);
+        
         if ($video_res->num_rows > 0) {
             $res = $video_res->fetch_assoc();
             $totalcount = $res['totalcount'];
+        }
+        
+        if ($totalcount == 0) {
+            $count_qry = "SELECT COUNT(*) as totalcount FROM `punjabi_videos`";
+      
+            $video_res = $this->conn->query($count_qry);
+
+            if ($video_res->num_rows > 0) {
+                $res = $video_res->fetch_assoc();
+                $totalcount = $res['totalcount'];
+            }
         }
         return $totalcount;
     }
@@ -472,7 +485,7 @@ class DbHandler {
         $cond = " WHERE `status` = 1 ";
         
         if($tag_id != 0 && $tag_name != "") {
-            $cond .= " AND `punjabi_tags` Like '%$tag_name%'";
+            $cond .= " AND `tags` Like '%$tag_name%'";
         }  
         
         $sort = "ORDER by `$order_field` desc";
@@ -484,13 +497,31 @@ class DbHandler {
         $limit_condition = "LIMIT $offset , $limit";
         
         $img_qry = "SELECT `id`, `title`, `url`, `tags_id`, `views`, `downloads`, `created_date`, `modified_date`, `status` FROM `punjabi_videos` $cond $sort $limit_condition";
-   
+      
         $img_res = $this->conn->query($img_qry);
         if ($img_res->num_rows > 0) {
             while ($res = $img_res->fetch_assoc()) {
                 //tag array
                 $tag_ids = $res["tags_id"];
-                $tag_res = $this->conn->query("SELECT `id`,`name`,`tag_type`,`tag_type_text` FROM `punjabi_tags` where `id` IN ($tag_ids)");
+                $tag_res = $this->conn->query("SELECT `id`,`name` FROM `punjabi_tags` where `id` IN ($tag_ids)");
+                if ($tag_res->num_rows > 0) {
+                    while($tagdata = $tag_res->fetch_assoc()) {
+                        $res["tag_arr"][] = $tagdata;
+                    }
+                }
+                unset($res['tags_id']);
+                $result[] = $res;
+            }
+        } else {
+            $img_qry = "SELECT `id`, `title`, `url`, `tags_id`, `views`, `downloads`, `created_date`, `modified_date`, `status` FROM `punjabi_videos` $sort $limit_condition";
+      
+            $img_res = $this->conn->query($img_qry);
+           
+            while ($res = $img_res->fetch_assoc()) {
+               
+                //tag array
+                $tag_ids = $res["tags_id"];
+                $tag_res = $this->conn->query("SELECT `id`,`name` FROM `punjabi_tags` where `id` IN ($tag_ids)");
                 if ($tag_res->num_rows > 0) {
                     while($tagdata = $tag_res->fetch_assoc()) {
                         $res["tag_arr"][] = $tagdata;
@@ -631,17 +662,29 @@ class DbHandler {
 
 // ----------------- START TEXT STATUS API FUNCTIONS ----------------- // 
     
-    public function getPunjabiTextCount($cat_id = 0) {
+    public function getPunjabiTextCount($tag_id = 0) {
         $totalcount = 0;
         $cond = " WHERE 1=1";
-        if($cat_id != 0) {
-            $cond .= " AND `cat_id` = '$cat_id'";
-        }            
+        if($tag_id != 0) {
+            $cond .= " AND `tag_id` = '$tag_id'";
+        }  
+        
         $count_qry = "SELECT COUNT(*) as totalcount FROM `punjabi_text_status` $cond";
         $video_res = $this->conn->query($count_qry);
+        
         if ($video_res->num_rows > 0) {
             $res = $video_res->fetch_assoc();
             $totalcount = $res['totalcount'];
+        }
+        
+        if ($totalcount == 0) {
+            $count_qry = "SELECT COUNT(*) as totalcount FROM `punjabi_text_status`";
+            
+            $video_res = $this->conn->query($count_qry);
+            if ($video_res->num_rows > 0) {
+                $res = $video_res->fetch_assoc();
+                $totalcount = $res['totalcount'];
+            }
         }
         return $totalcount;
     }
@@ -667,18 +710,48 @@ class DbHandler {
     public function getPunjabiTextStatus($cat_id = 0, $limit = 10, $offset = 0, $order = 'desc') {
         $result = array();
         $cond = " WHERE 1=1";
+        
         if($cat_id != 0) {
-            $cond .= " AND `cat_id` = '$cat_id'";
-        }            
+            $cond .= " AND `tag_id` = '$cat_id'";
+        }  
+        
         $sort = "ORDER by `id` desc";
         if($order != 'desc') {
             $sort = "ORDER by `id` $order";
         }
-        $limit_condition = "LIMIT $offset , $limit";        
+        
+        $limit_condition = "LIMIT $offset , $limit";  
+        
         $vid_qry = "SELECT * FROM `punjabi_text_status` $cond $sort $limit_condition";
         $video_res = $this->conn->query($vid_qry);
+        
         if ($video_res->num_rows > 0) {
             while ($res = $video_res->fetch_assoc()) {
+                //tag array
+                $tag_ids = $res["tag_id"];
+                $tag_res = $this->conn->query("SELECT `id`,`name` FROM `punjabi_tags` where `id` IN ($tag_ids)");
+                if ($tag_res->num_rows > 0) {
+                    while($tagdata = $tag_res->fetch_assoc()) {
+                        $res["tag_arr"][] = $tagdata;
+                    }
+                }
+                unset($res['tag_id']);
+                $result[] = $res;
+            }
+        } else {
+            $vid_qry = "SELECT * FROM `punjabi_text_status` $sort $limit_condition";
+            $video_res = $this->conn->query($vid_qry);
+            
+            while ($res = $video_res->fetch_assoc()) {
+                //tag array
+                $tag_ids = $res["tag_id"];
+                $tag_res = $this->conn->query("SELECT `id`,`name` FROM `punjabi_tags` where `id` IN ($tag_ids)");
+                if ($tag_res->num_rows > 0) {
+                    while($tagdata = $tag_res->fetch_assoc()) {
+                        $res["tag_arr"][] = $tagdata;
+                    }
+                }
+                unset($res['tag_id']);
                 $result[] = $res;
             }
         }
@@ -717,6 +790,16 @@ class DbHandler {
             $res = $video_res->fetch_assoc();
             $totalcount = $res['totalcount'];
         }
+        
+        if ($totalcount == 0) {
+            $count_qry = "SELECT COUNT(*) as totalcount FROM `punjabi_text_status`";
+        
+            $video_res = $this->conn->query($count_qry);
+            if ($video_res->num_rows > 0) {
+                $res = $video_res->fetch_assoc();
+                $totalcount = $res['totalcount'];
+            }
+        }
         return $totalcount;
     }
     
@@ -735,16 +818,41 @@ class DbHandler {
     }
     
     public function PunjabisearchText($search){
-        $res = array();
+        $result = array();
         $vid_qry = $this->conn->query("SELECT * FROM `punjabi_text_status` where  `text` like '%$search%' ORDER by `id` DESC");
         
         if($vid_qry->num_rows > 0) {
             $i = 0;
-            while ($row = $vid_qry->fetch_assoc()) {
-                $res[] = $row;
+            while ($res = $vid_qry->fetch_assoc()) {
+                //tag array
+                $tag_ids = $res["tag_id"];
+                $tag_res = $this->conn->query("SELECT `id`,`name`  FROM `punjabi_tags` where `id` IN ($tag_ids)");
+                if ($tag_res->num_rows > 0) {
+                    while($tagdata = $tag_res->fetch_assoc()) {
+                        $res["tag_arr"][] = $tagdata;
+                    }
+                }
+                unset($res['tag_id']);
+                $result[] = $res;
+            }
+        } else {
+            $vid_qry = $this->conn->query("SELECT * FROM `punjabi_text_status` ORDER BY `id` DESC");
+            
+            $i = 0;
+            while ($res = $vid_qry->fetch_assoc()) {
+                //tag array
+                $tag_ids = $res["tag_id"];
+                $tag_res = $this->conn->query("SELECT `id`,`name`  FROM `punjabi_tags` where `id` IN ($tag_ids)");
+                if ($tag_res->num_rows > 0) {
+                    while($tagdata = $tag_res->fetch_assoc()) {
+                        $res["tag_arr"][] = $tagdata;
+                    }
+                }
+                unset($res['tag_id']);
+                $result[] = $res;
             }
         }
-        return $res;
+        return $result;
     }
     
     public function GodsearchText($search){
@@ -816,7 +924,8 @@ class DbHandler {
     public function getPunjabiTagInfo($tag_id) {
         $this->conn->query("SET NAMES utf8");
         $result = array();
-        $tag_qry = "SELECT `tag` FROM `Punjabi_tags` where `id` = $tag_id";
+        $tag_qry = "SELECT `name` FROM `Punjabi_tags` where `id` = $tag_id";
+       
         $video_res = $this->conn->query($tag_qry);
         if ($video_res->num_rows > 0) {
             $result = $video_res->fetch_assoc();
@@ -844,12 +953,24 @@ class DbHandler {
         $cond = " WHERE `status` = 1";
         if($tag != "") {
             $cond .= " AND `tags` Like '%$tag%'";
-        }            
+        }          
         $count_qry = "SELECT COUNT(*) as totalcount FROM `punjabi_images` $cond";
+       
         $video_res = $this->conn->query($count_qry);
         if ($video_res->num_rows > 0) {
             $res = $video_res->fetch_assoc();
             $totalcount = $res['totalcount'];
+        }
+        
+        if ($totalcount == 0) {
+            $count_qry = "SELECT COUNT(*) as totalcount FROM `punjabi_images`";
+       
+            $video_res = $this->conn->query($count_qry);
+            
+            if ($video_res->num_rows > 0) {
+                $res = $video_res->fetch_assoc();
+                $totalcount = $res['totalcount'];
+            }
         }
         return $totalcount;
     }
@@ -877,7 +998,7 @@ class DbHandler {
         $result = array();
         $cond = " WHERE `status` = 1 ";
         if($tag_id != 0 && $tag_name != "") {
-            $cond .= " AND `punjabi_tags` Like '%$tag_name%'";
+            $cond .= " AND `tags` Like '%$tag_name%'";
         }            
         $sort = "ORDER by `$order_field` desc";
         if($order != 'desc') {
@@ -892,7 +1013,23 @@ class DbHandler {
             while ($res = $img_res->fetch_assoc()) {
                 //tag array
                 $tag_ids = $res["tags_id"];
-                $tag_res = $this->conn->query("SELECT `id`,`name`,`tag_type`,`tag_type_text` FROM `punjabi_tags` where `id` IN ($tag_ids)");
+                $tag_res = $this->conn->query("SELECT `id`,`name` FROM `punjabi_tags` where `id` IN ($tag_ids)");
+                if ($tag_res->num_rows > 0) {
+                    while($tagdata = $tag_res->fetch_assoc()) {
+                        $res["tag_arr"][] = $tagdata;
+                    }
+                }
+                unset($res['tags_id']);
+                $result[] = $res;
+            }
+        } else {
+            $img_qry = "SELECT `id`, `title`, `image`, `thumb`, `tags_id`, `views`, `downloads`, `created_date`, `modified_date`, `status` FROM `punjabi_images` $sort $limit_condition";
+   
+            $img_res = $this->conn->query($img_qry);
+            while ($res = $img_res->fetch_assoc()) {
+                //tag array
+                $tag_ids = $res["tags_id"];
+                $tag_res = $this->conn->query("SELECT `id`,`name` FROM `punjabi_tags` where `id` IN ($tag_ids)");
                 if ($tag_res->num_rows > 0) {
                     while($tagdata = $tag_res->fetch_assoc()) {
                         $res["tag_arr"][] = $tagdata;
