@@ -8,7 +8,7 @@ error_reporting(E_ALL);
  * and open the template in the editor.
  */
 
-$url = "http://localhost/api.vsadmin.patidarsena.in/v1/get_punjabi_tags";
+$url = "http://localhost/api.vsadmin.patidarsena.in/v1/get_god_videos";
 $ch = curl_init();
 
 $headers = array(
@@ -21,7 +21,9 @@ $headers = array(
 
 $post_fields = array(
     "app_code" => 'eIoyV1',
-//    "tag_type" => 'textstatus',
+    "tag_id" => 3, 
+    "limit" => 20, 
+    "offset" => 0
 );
 
 curl_setopt($ch, CURLOPT_URL, $url);
@@ -34,11 +36,6 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 $output = curl_exec($ch);
 
 curl_close($ch);
-
-$test = json_decode($output, true);
-
-
-file_put_contents('get_punjabi_tags.json', json_encode($test));
 
 echo "<pre>";
 print_r($output);

@@ -8,7 +8,7 @@ error_reporting(E_ALL);
  * and open the template in the editor.
  */
 
-$url = "http://localhost/api.vsadmin.patidarsena.in/v1/get_list_Punjabi_images";
+$url = "http://localhost/api.vsadmin.patidarsena.in/v1/get_god_textstatus";
 $ch = curl_init();
 
 $headers = array(
@@ -21,8 +21,9 @@ $headers = array(
 
 $post_fields = array(
     "app_code" => 'eIoyV1',
-    "tag_id" => 4, 
-    "limit" => 20, 
+    "cat_id" => 1, 
+    "order" => "desc", 
+    "limit" => 10, 
     "offset" => 0
 );
 

@@ -8,7 +8,7 @@ error_reporting(E_ALL);
  * and open the template in the editor.
  */
 
-$url = "http://localhost/api.vsadmin.patidarsena.in/v1/get_list_punjabi_textstatus";
+$url = "http://localhost/api.vsadmin.patidarsena.in/v1/get_punjabi_images";
 $ch = curl_init();
 
 $headers = array(
@@ -21,10 +21,10 @@ $headers = array(
 
 $post_fields = array(
     "app_code" => 'eIoyV1',
-    "tag_id" => 10, 
-    "order" => "desc", 
-    "limit" => 10, 
-    "offset" => 0
+    "tag_id" => '', 
+//    "limit" => 20, 
+//    "offset" => 0,
+    "page" => 1,
 );
 
 curl_setopt($ch, CURLOPT_URL, $url);
@@ -37,6 +37,13 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 $output = curl_exec($ch);
 
 curl_close($ch);
+
+$test = json_decode($output, true);
+
+
+file_put_contents('get_punjabi_images.json', json_encode($test));
+
+//echo $output;
 
 echo "<pre>";
 print_r($output);

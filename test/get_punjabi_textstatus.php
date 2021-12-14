@@ -1,6 +1,4 @@
 <?php
-//header('Content-disposition: attachment; filename=file.json');
-//header('Content-type: application/json');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -10,7 +8,7 @@ error_reporting(E_ALL);
  * and open the template in the editor.
  */
 
-$url = "http://localhost/api.vsadmin.patidarsena.in/v1/get_list_Punjabi_videos";
+$url = "http://localhost/api.vsadmin.patidarsena.in/v1/get_punjabi_textstatus";
 $ch = curl_init();
 
 $headers = array(
@@ -23,11 +21,12 @@ $headers = array(
 
 $post_fields = array(
     "app_code" => 'eIoyV1',
-    "tag_id" => 8, 
-    "limit" => 20, 
-    "offset" => 0,
+    "tag_id" => '', 
+    "order" => "desc", 
+//    "limit" => 10, 
+//    "offset" => 0,
+    "page" => 1,
 );
-
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_TIMEOUT, 60);
@@ -39,10 +38,6 @@ $output = curl_exec($ch);
 
 curl_close($ch);
 
-
-$test = json_decode($output, true);
-
-
-file_put_contents('test.json', json_encode($test));
-
-echo $output;
+echo "<pre>";
+print_r($output);
+exit;

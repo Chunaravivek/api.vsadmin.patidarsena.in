@@ -1,6 +1,4 @@
 <?php
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -15,7 +13,6 @@ error_reporting(E_ALL);
 ini_set('memory_limit', '-1');
 require_once '../include/DbHandler.php';
 require '.././libs/Slim/Slim.php';
-// require '.././vendor/autoload.php';
 
 // apache_request_headers replicement for nginx
 if (!function_exists('apache_request_headers')) {
@@ -38,7 +35,6 @@ if (!function_exists('apache_request_headers')) {
 \Slim\Slim::registerAutoloader();
 
 $app = new \Slim\Slim();
-// $app = new \Slim\App();
 //Global Variable
 $api_key = NULL;
 $from = NULL;
@@ -217,17 +213,206 @@ function verifyRequiredParams($required_fields,$api = null) {
     });
     
 // ----------------- END REGISTER API ----------------- //
+
+// ----------------- START Text Categories2 API ----------------- //
+    
+    $app->post('/get_list_punjabi_categories2', function() use ($app) {
+        verifyRequiredParams(array('app_code'));
+       
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        $response["count"] = 0;
+        $response['data'] = "";
+        $headers = apache_request_headers();
+        
+        if (isset($headers['Apikey'])) {
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+            $app_code = $app->request->post('app_code');
+            
+            $res = $db->isValidApi($apikey,$app_code);
+            
+            if (!$res->num_rows > 0) {
+                
+                $response['data'] = [];
+                $response["success"] = "0";
+                $response["error"] = "Sorry, Apikey and Appcode didn't matched";
+                
+            } else {
+                
+                $result = $db->getPunjabiTextCategories2();
+            
+                if (count($result) > 0 && !empty($result)) {
+                    $response["success"] = "1";
+                    $response["count"] = count($result);
+                    $response['data'] = $result;
+                } else {
+                    $response['data'] = [];
+                    $response["success"] = "0";
+                    $response["error"] = "Punjabi Text Categories2 Not Available.";
+                }
+            }
+        } else {
+            $response['data'] = [];
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+        }
+        echoRespnse(200, $response);
+    }); 
+    
+    $app->post('/get_list_god_categories2', function() use ($app) {
+        verifyRequiredParams(array('app_code'));
+       
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        $response["count"] = 0;
+        $response['data'] = "";
+        $headers = apache_request_headers();
+        
+        if (isset($headers['Apikey'])) {
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+            $app_code = $app->request->post('app_code');
+            
+            $res = $db->isValidApi($apikey,$app_code);
+            
+            if (!$res->num_rows > 0) {
+                
+                $response['data'] = [];
+                $response["success"] = "0";
+                $response["error"] = "Sorry, Apikey and Appcode didn't matched";
+                
+            } else {
+                
+                $result = $db->getPunjabiTextCategories2();
+            
+                if (count($result) > 0 && !empty($result)) {
+                    $response["success"] = "1";
+                    $response["count"] = count($result);
+                    $response['data'] = $result;
+                } else {
+                    $response['data'] = [];
+                    $response["success"] = "0";
+                    $response["error"] = "God Text Categories Not Available.";
+                }
+            }
+        } else {
+            $response['data'] = [];
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+        }
+        echoRespnse(200, $response);
+    });
+    
+// ----------------- END Text Categories2 API ----------------- //
+
+// ----------------- START Text Categories API ----------------- //
+    
+    $app->post('/get_list_punjabi_categories', function() use ($app) {
+        verifyRequiredParams(array('app_code'));
+       
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        $response["count"] = 0;
+        $response['data'] = "";
+        $headers = apache_request_headers();
+        
+        if (isset($headers['Apikey'])) {
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+            $app_code = $app->request->post('app_code');
+            
+            $res = $db->isValidApi($apikey,$app_code);
+            
+            if (!$res->num_rows > 0) {
+                
+                $response['data'] = [];
+                $response["success"] = "0";
+                $response["error"] = "Sorry, Apikey and Appcode didn't matched";
+                
+            } else {
+                
+                $result = $db->getPunjabiTextCategories();
+            
+                if (count($result) > 0 && !empty($result)) {
+                    $response["success"] = "1";
+                    $response["count"] = count($result);
+                    $response['data'] = $result;
+                } else {
+                    $response['data'] = [];
+                    $response["success"] = "0";
+                    $response["error"] = "Punjabi Text Categories2 Not Available.";
+                }
+            }
+        } else {
+            $response['data'] = [];
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+        }
+        echoRespnse(200, $response);
+    }); 
+    
+    $app->post('/get_list_god_categories', function() use ($app) {
+        verifyRequiredParams(array('app_code'));
+       
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        $response["count"] = 0;
+        $response['data'] = "";
+        $headers = apache_request_headers();
+        
+        if (isset($headers['Apikey'])) {
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+            $app_code = $app->request->post('app_code');
+            
+            $res = $db->isValidApi($apikey,$app_code);
+            
+            if (!$res->num_rows > 0) {
+                
+                $response['data'] = [];
+                $response["success"] = "0";
+                $response["error"] = "Sorry, Apikey and Appcode didn't matched";
+                
+            } else {
+                
+                $result = $db->getPunjabiTextCategories();
+            
+                if (count($result) > 0 && !empty($result)) {
+                    $response["success"] = "1";
+                    $response["count"] = count($result);
+                    $response['data'] = $result;
+                } else {
+                    $response['data'] = [];
+                    $response["success"] = "0";
+                    $response["error"] = "God Text Categories Not Available.";
+                }
+            }
+        } else {
+            $response['data'] = [];
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+        }
+        echoRespnse(200, $response);
+    }); 
+    
+// ----------------- END Text Categories API ----------------- //
     
 // ----------------- START Videos API ----------------- //
     
     $app->post('/get_punjabi_videos', function() use ($app) {
-       
         // check for required params
+        $response = array();
         $headers = apache_request_headers();
         $response = array();
         $response["success"] = "0";
         $response["error"] = "";
         $response["count"] = 0;
+//        $response['images'] = array();
         
         if (isset($headers['Apikey'])) {
             
@@ -240,13 +425,13 @@ function verifyRequiredParams($required_fields,$api = null) {
             if($app->request->post('limit')) {
                 $limit = $app->request->post('limit');
             } else {
-                $limit = 20;
+                $limit = 10;
             }
 
-            if($app->request->post('page')) {
-                $page = $app->request->post('page');
+            if($app->request->post('offset')) {
+                $offset = $app->request->post('offset');
             } else {
-                $page = 1;
+                $offset = 0;
             }
 
             if($app->request->post('order_field')) {
@@ -287,19 +472,18 @@ function verifyRequiredParams($required_fields,$api = null) {
                     if(!empty($tag_data)) {
                         $tag_name = $tag_data["name"];
                     }
-                    
                 } else {
                     $tag_name = "";
                 }
                 $total_count = $db->getPunjabiVideoCount($tag_name);
                
-                if ($page >= $total_count && $total_count != 0) {
+                if ($offset >= $total_count && $total_count != 0) {
                     $response["success"] = "0";
-                    $response["error"] = "Sorry, Invalid value for page";
+                    $response["error"] = "Sorry, Invalid value for offset";
                     $response["count"] = 0;
                     $response['data'] = array();
                 } else {
-                    $result = $db->getPunjabiVideos($tag_id, $tag_name, $limit, $page, $order_field, $order);
+                    $result = $db->getPunjabiVideos($tag_id, $tag_name, $limit, $offset, $order_field, $order);
                     
                     if (count($result) > 0 && !empty($result)) {
                         $response["success"] = "1";
@@ -316,17 +500,21 @@ function verifyRequiredParams($required_fields,$api = null) {
         } else {
             $response["success"] = "0";
             $response["error"] = "Apikey is missing";
+//            $response['images'] = array();
         }
         echoRespnse(200, $response);
     });
     
     $app->post('/get_god_videos', function() use ($app) {
         // check for required params
+        $response = array();
         $headers = apache_request_headers();
+        
         $response = array();
         $response["success"] = "0";
         $response["error"] = "";
         $response["count"] = 0;
+        $response['images'] = array();
         
         if (isset($headers['Apikey'])) {
             
@@ -339,13 +527,13 @@ function verifyRequiredParams($required_fields,$api = null) {
             if($app->request->post('limit')) {
                 $limit = $app->request->post('limit');
             } else {
-                $limit = 20;
+                $limit = 10;
             }
 
-            if($app->request->post('page')) {
-                $page = $app->request->post('page');
+            if($app->request->post('offset')) {
+                $offset = $app->request->post('offset');
             } else {
-                $page = 1;
+                $offset = 0;
             }
 
             if($app->request->post('order_field')) {
@@ -384,22 +572,20 @@ function verifyRequiredParams($required_fields,$api = null) {
                     
                     $tag_data = $db->getGodTagInfo($tag_id);
                     if(!empty($tag_data)) {
-                        $tag_name = $tag_data["name"];
+                        $tag_name = $tag_data["tag"];
                     }
                     
                 } else {
                     $tag_name = "";
                 }
                 $total_count = $db->getGodVideoCount($tag_name);
-               
-                if ($page >= $total_count && $total_count != 0) {
+                if ($offset >= $total_count && $total_count != 0) {
                     $response["success"] = "0";
-                    $response["error"] = "Sorry, Invalid value for page";
+                    $response["error"] = "Sorry, Invalid value for offset";
                     $response["count"] = 0;
                     $response['data'] = array();
                 } else {
-                    
-                    $result = $db->getGodVideos($tag_id, $tag_name, $limit, $page, $order_field, $order);
+                    $result = $db->getGodVideos($tag_id, $tag_name, $limit, $offset, $order_field, $order);
                     
                     if (count($result) > 0 && !empty($result)) {
                         $response["success"] = "1";
@@ -416,6 +602,83 @@ function verifyRequiredParams($required_fields,$api = null) {
         } else {
             $response["success"] = "0";
             $response["error"] = "Apikey is missing";
+            $response['images'] = array();
+        }
+        echoRespnse(200, $response);
+    });
+    
+    $app->post('/get_search_punbjabi_videos',function() use ($app) {
+      
+        verifyRequiredParams(array('keyword', 'token'),'search');
+        $response = array();
+        $response["error"] = false;
+        $response["message"] = "videos";
+        $response["count"] = 0;
+        $response['data'] = [];
+      
+        $token = $app->request->post('token');
+        $log  = "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a").PHP_EOL.
+           "token:".$token.PHP_EOL.
+           "keyword:".$app->request->post('keyword').PHP_EOL.
+           "-------------------------".PHP_EOL;
+        //Save string to log, use FILE_APPEND to append.
+        file_put_contents('./log_'.date("j.n.Y").'.log', $log, FILE_APPEND);
+
+        if($token == 'yh12sEjLhLgGWnn853QB9/VWTpM=' || $token == 'B6n31cKHfLkpE5eo0gP5ddfEuhA=' || $token == "4po0kYMgWb8Om0H2TcatU9D0aqE=" || $token == "flLD3pmevcgB4ylyIiIKqFKcYSc=" || $token == "D/EJYNsFtRuF4rhMkMg+EpFZmiU=") {
+            $db = new DbHandler();
+            $keyword = $app->request->post('keyword');
+            $videos = $db->searchPunjabiVideos($keyword);
+
+            if (count($videos) > 0) {
+                $response["error"] = false;
+                $response["message"] = "videos";
+                $response["count"] = count($videos);
+                $response['data'] = $videos;
+            } else {
+                $response["error"] = true;
+                $response["message"] = "sorry, no videos found";
+            }
+        } else {
+            $response["error"] = true;
+            $response["message"] = "sorry, invalid token";
+        }
+        echoRespnse(200, $response);
+    }); 
+    
+    $app->post('/get_search_god_videos',function() use ($app) {
+      
+        verifyRequiredParams(array('keyword', 'token'),'search');
+        $response = array();
+        $response["error"] = false;
+        $response["message"] = "videos";
+        $response["count"] = 0;
+        $response['data'] = [];
+      
+        $token = $app->request->post('token');
+        $log  = "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a").PHP_EOL.
+           "token:".$token.PHP_EOL.
+           "keyword:".$app->request->post('keyword').PHP_EOL.
+           "-------------------------".PHP_EOL;
+        //Save string to log, use FILE_APPEND to append.
+        file_put_contents('./log_'.date("j.n.Y").'.log', $log, FILE_APPEND);
+
+        if($token == 'yh12sEjLhLgGWnn853QB9/VWTpM=' || $token == 'B6n31cKHfLkpE5eo0gP5ddfEuhA=' || $token == "4po0kYMgWb8Om0H2TcatU9D0aqE=" || $token == "flLD3pmevcgB4ylyIiIKqFKcYSc=" || $token == "D/EJYNsFtRuF4rhMkMg+EpFZmiU=") {
+            $db = new DbHandler();
+            $keyword = $app->request->post('keyword');
+            $videos = $db->searchPunjabiVideos($keyword);
+
+            if (count($videos) > 0) {
+                $response["error"] = false;
+                $response["message"] = "videos";
+                $response["count"] = count($videos);
+                $response['data'] = $videos;
+            } else {
+                $response["error"] = true;
+                $response["message"] = "sorry, no videos found";
+            }
+        } else {
+            $response["error"] = true;
+            $response["message"] = "sorry, invalid token";
         }
         echoRespnse(200, $response);
     }); 
@@ -506,9 +769,9 @@ function verifyRequiredParams($required_fields,$api = null) {
 
 // ----------------- START Text Status API ----------------- //
     
-    $app->post('/get_punjabi_textstatus', function() use ($app) {
+    $app->post('/get_list_punjabi_textstatus', function() use ($app) {
         // check for required params
-      
+        $response = array();
         $headers = apache_request_headers();
         $response = array();
         $response["success"] = "0";
@@ -527,13 +790,13 @@ function verifyRequiredParams($required_fields,$api = null) {
             if($app->request->post('limit')) {
                 $limit = $app->request->post('limit');
             } else {
-                $limit = 20;
+                $limit = 10;
             }
-            
-            if($app->request->post('page')) {
-                $page = $app->request->post('page');
+
+            if($app->request->post('offset')) {
+                $offset = $app->request->post('offset');
             } else {
-                $page = 1;
+                $offset = 0;
             }
 
             if($app->request->post('order')) {
@@ -558,15 +821,15 @@ function verifyRequiredParams($required_fields,$api = null) {
                 // Limit Offset
                 $total_count = $db->getPunjabiTextCount($tag_id);
                 
-                if ($page >= $total_count) {
+                if ($offset >= $total_count) {
                     $response["success"] = "0";
                     $response["error"] = "Sorry, Invalid value for offset";
                     $response["count"] = 0;
                     $response['data'] = [];
                 } else {
                     
-                    $result = $db->getPunjabiTextStatus($tag_id, $page, $limit,  $order);
-                   
+                    $result = $db->getPunjabiTextStatus($tag_id, $limit, $offset,  $order);
+                    
                     if (count($result) > 0 && !empty($result)) {
                         $response["success"] = "1";
                         $response["count"] = (int)$total_count;
@@ -588,7 +851,7 @@ function verifyRequiredParams($required_fields,$api = null) {
     
     $app->post('/get_god_textstatus', function() use ($app) {
         // check for required params
-      
+        $response = array();
         $headers = apache_request_headers();
         $response = array();
         $response["success"] = "0";
@@ -607,13 +870,13 @@ function verifyRequiredParams($required_fields,$api = null) {
             if($app->request->post('limit')) {
                 $limit = $app->request->post('limit');
             } else {
-                $limit = 20;
+                $limit = 10;
             }
-            
-            if($app->request->post('page')) {
-                $page = $app->request->post('page');
+
+            if($app->request->post('offset')) {
+                $offset = $app->request->post('offset');
             } else {
-                $page = 1;
+                $offset = 0;
             }
 
             if($app->request->post('order')) {
@@ -622,10 +885,10 @@ function verifyRequiredParams($required_fields,$api = null) {
                 $order = 'desc';
             }
 
-            if($app->request->post('tag_id')) {
-                $tag_id = $app->request->post('tag_id');
+            if($app->request->post('cat_id')) {
+                $cat_id = $app->request->post('cat_id');
             } else {
-                $tag_id = 0;
+                $cat_id = 0;
             }
             
             $res = $db->isValidApi($apikey, $app_code);
@@ -635,18 +898,19 @@ function verifyRequiredParams($required_fields,$api = null) {
                 $response["count"] = 0;
                 $response['data'] = [];
             } else {
-                // Limit Offset
-                $total_count = $db->getGodTextCount($tag_id);
                 
-                if ($page >= $total_count) {
+                // Limit Offset
+                $total_count = $db->getGodTextCount($cat_id);
+                
+                if ($offset >= $total_count) {
                     $response["success"] = "0";
                     $response["error"] = "Sorry, Invalid value for offset";
                     $response["count"] = 0;
                     $response['data'] = [];
                 } else {
                     
-                    $result = $db->getGodTextStatus($tag_id, $page, $limit,  $order);
-                   
+                    $result = $db->getGodTextStatus($cat_id, $limit, $offset,  $order);
+                    
                     if (count($result) > 0 && !empty($result)) {
                         $response["success"] = "1";
                         $response["count"] = (int)$total_count;
@@ -666,211 +930,98 @@ function verifyRequiredParams($required_fields,$api = null) {
         echoRespnse(200, $response);
     });
     
+    $app->post('/get_punjabi_text_search',function() use ($app) {
+        $response = array();
+        verifyRequiredParams(array('search', 'app_code'));
+        
+        $search = $app->request->post('search');
+        $app_code = $app->request->post('app_code');
+        
+        $headers = apache_request_headers();
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        $response["count"] = 0;
+        $response['data'] = "";
+        if (isset($headers['Apikey'])) {
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+
+            $res = $db->isValidApi($apikey,$app_code);
+            if (!$res->num_rows > 0) {
+                $response["success"] = "0";
+                $response["error"] = "Sorry, Apikey is invalid";
+                $response["count"] = 0;
+                $response['data'] = [];
+            } else {
+                // Limit Offset
+                $total_count = $db->getPunjabiTextSearchCount($search);
+                $result = $db->PunjabisearchText($search);
+                if (count($result) > 0 && !empty($result)) {
+                    $response["success"] = "1";
+                    $response["count"] = (int)$total_count;
+                    $response['data'] = $result;
+                } else {
+                    $response["success"] = "0";
+                    $response["error"] = "Data Not Available.";
+                    $response["count"] = (int)$total_count;
+                    $response['data'] = [];
+                }
+            }
+        } else {
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+        }
+        echoRespnse(200, $response);
+    }); 
+    
+    $app->post('/get_god_text_search',function() use ($app) {
+        $response = array();
+        verifyRequiredParams(array('search', 'app_code'));
+        
+        $search = $app->request->post('search');
+        $app_code = $app->request->post('app_code');
+        
+        $headers = apache_request_headers();
+        $response = array();
+        $response["succsess"] = "0";
+        $response["error"] = "";
+        $response["count"] = 0;
+        $response['data'] = "";
+        if (isset($headers['Apikey'])) {
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+
+            $res = $db->isValidApi($apikey,$app_code);
+            if (!$res->num_rows > 0) {
+                $response["success"] = "0";
+                $response["error"] = "Sorry, Apikey is invalid";
+                $response["count"] = 0;
+                $response['data'] = [];
+            } else {
+                // Limit Offset
+                $total_count = $db->getGodTextSearchCount($search);
+                $result = $db->GodSearchText($search);
+                
+                if (count($result) > 0 && !empty($result)) {
+                    $response["success"] = "1";
+                    $response["count"] = (int)$total_count;
+                    $response['data'] = $result;
+                } else {
+                    $response["success"] = "0";
+                    $response["error"] = "Data Not Available.";
+                    $response["count"] = (int)$total_count;
+                    $response['data'] = [];
+                }
+            }
+        } else {
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+        }
+        echoRespnse(200, $response);
+    });
+    
 // ----------------- END Text Status API ----------------- //
-    
-// ----------------- START Makers API ----------------- //
-    
-    $app->post('/get_punjabi_makers', function() use ($app) {
-        // check for required params
-        
-        $headers = apache_request_headers();
-        $response = array();
-        $response["success"] = "0";
-        $response["error"] = "";
-        $response["count"] = 0;
-        $response['data'] = "";
-        
-        if (isset($headers['Apikey'])) {
-            
-            $apikey = $headers['Apikey'];
-            $db = new DbHandler();
-            
-            // reading post params
-            $app_code = $app->request->post('app_code');
-            
-            if($app->request->post('limit')) {
-                $limit = $app->request->post('limit');
-            } else {
-                $limit = 20;
-            }
-            
-            if($app->request->post('page')) {
-                $page = $app->request->post('page');
-            } else {
-                $page = 1;
-            }
-
-            if($app->request->post('order')) {
-                $order = $app->request->post('order');
-            } else {
-                $order = 'desc';
-            }
-
-            if($app->request->post('tag_id')) {
-                $tag_id = $app->request->post('tag_id');
-            } else {
-                $tag_id = 0;
-            }
-            
-            if($app->request->post('order_field')) {
-                $order_field = $app->request->post('order_field');
-                if(!in_array($order_field, array('id', 'views', 'downloads', 'created_date', 'modified_date'))) {
-                    $order_field = 'id';
-                }
-            } else {
-                $order_field = 'id';
-            }
-            
-            $res = $db->isValidApi($apikey, $app_code);
-            if (!$res->num_rows > 0) {
-                $response["success"] = "0";
-                $response["error"] = "Sorry, Apikey is invalid";
-                $response["count"] = 0;
-                $response['data'] = [];
-            } else {
-                // Limit Offset
-                $tag_name = "";
-                if($tag_id != 0) {
-                    
-                    $tag_data = $db->getPunjabiTagInfo($tag_id);
-                    if(!empty($tag_data)) {
-                        $tag_name = $tag_data["name"];
-                    }
-                    
-                } else {
-                    $tag_name = "";
-                }
-              
-                $total_count = $db->getPunjabiMakersCount($tag_name);
-            
-                if ($page >= $total_count && $total_count != 0) {
-                    $response["success"] = "0";
-                    $response["error"] = "Sorry, Invalid value for offset";
-                    $response["count"] = 0;
-                    $response['data'] = array();
-                } else {
-                    $result = $db->getPunjabiMakers($tag_id, $tag_name, $limit, $page,$order, $order_field);
-                  
-                    if (count($result) > 0 && !empty($result)) {
-                        $response["success"] = "1";
-                        $response["count"] = (int)$total_count;
-                        $response['data'] = $result;
-                    } else {
-                        $response["success"] = "1";
-                        $response["error"] = "Data Not Available.";
-                        $response['data'] = array();
-                    }
-                }
-            }
-        } else {
-            $response["success"] = "0";
-            $response["error"] = "Apikey is missing";
-            $response['data'] = [];
-        }
-        echoRespnse(200, $response);
-    });
-    
-    $app->post('/get_god_makers', function() use ($app) {
-        // check for required params
-        
-        $headers = apache_request_headers();
-        $response = array();
-        $response["success"] = "0";
-        $response["error"] = "";
-        $response["count"] = 0;
-        $response['data'] = "";
-        
-        if (isset($headers['Apikey'])) {
-            
-            $apikey = $headers['Apikey'];
-            $db = new DbHandler();
-            
-            // reading post params
-            $app_code = $app->request->post('app_code');
-            
-            if($app->request->post('limit')) {
-                $limit = $app->request->post('limit');
-            } else {
-                $limit = 20;
-            }
-            
-            if($app->request->post('page')) {
-                $page = $app->request->post('page');
-            } else {
-                $page = 1;
-            }
-
-            if($app->request->post('order')) {
-                $order = $app->request->post('order');
-            } else {
-                $order = 'desc';
-            }
-
-            if($app->request->post('tag_id')) {
-                $tag_id = $app->request->post('tag_id');
-            } else {
-                $tag_id = 0;
-            }
-            
-            if($app->request->post('order_field')) {
-                $order_field = $app->request->post('order_field');
-                if(!in_array($order_field, array('id', 'views', 'downloads', 'created_date', 'modified_date'))) {
-                    $order_field = 'id';
-                }
-            } else {
-                $order_field = 'id';
-            }
-            
-            $res = $db->isValidApi($apikey, $app_code);
-            if (!$res->num_rows > 0) {
-                $response["success"] = "0";
-                $response["error"] = "Sorry, Apikey is invalid";
-                $response["count"] = 0;
-                $response['data'] = [];
-            } else {
-                // Limit Offset
-                $tag_name = "";
-                if($tag_id != 0) {
-                    
-                    $tag_data = $db->getGodTagInfo($tag_id);
-                    if(!empty($tag_data)) {
-                        $tag_name = $tag_data["name"];
-                    }
-                    
-                } else {
-                    $tag_name = "";
-                }
-              
-                $total_count = $db->getGodMakersCount($tag_name);
-            
-                if ($page >= $total_count && $total_count != 0) {
-                    $response["success"] = "0";
-                    $response["error"] = "Sorry, Invalid value for offset";
-                    $response["count"] = 0;
-                    $response['data'] = array();
-                } else {
-                    $result = $db->getGodMakers($tag_id, $tag_name, $limit, $page,$order, $order_field);
-                  
-                    if (count($result) > 0 && !empty($result)) {
-                        $response["success"] = "1";
-                        $response["count"] = (int)$total_count;
-                        $response['data'] = $result;
-                    } else {
-                        $response["success"] = "1";
-                        $response["error"] = "Data Not Available.";
-                        $response['data'] = array();
-                    }
-                }
-            }
-        } else {
-            $response["success"] = "0";
-            $response["error"] = "Apikey is missing";
-            $response['data'] = [];
-        }
-        echoRespnse(200, $response);
-    });
-    
-// ----------------- END Makers API ----------------- //
     
 // ----------------- START Tags API ----------------- //
     
@@ -878,8 +1029,8 @@ function verifyRequiredParams($required_fields,$api = null) {
         verifyRequiredParams(array('app_code'));
         
         $app_code = $app->request->post('app_code');
-        $tag_type = $app->request->post('tag_type');
         
+        $response = array();
         $headers = apache_request_headers();
         $response = array();
         $response["success"] = "0";
@@ -897,8 +1048,7 @@ function verifyRequiredParams($required_fields,$api = null) {
                 $response["error"] = "Sorry, Apikey is invalid";
             } else {
                 
-//                $result = $db->getPunjabiTags($tag_type);
-                $result = $db->getPunjabiTagsOld();
+                $result = $db->getPunjabiTags();
                 
                 if (count($result) > 0 && !empty($result)) {
                     $response["success"] = "1";
@@ -922,26 +1072,26 @@ function verifyRequiredParams($required_fields,$api = null) {
         verifyRequiredParams(array('app_code'));
         
         $app_code = $app->request->post('app_code');
-        $tag_type = $app->request->post('tag_type');
         
+        $response = array();
         $headers = apache_request_headers();
         $response = array();
         $response["success"] = "0";
         $response["error"] = "";
         $response["count"] = 0;
         $response['data'] = array();
-        
         if (isset($headers['Apikey'])) {
+            
             $apikey = $headers['Apikey'];
             $db = new DbHandler();
             $res = $db->isValidApi($apikey,$app_code);
+            
             if (!$res->num_rows > 0) {
                 $response['data'] = array();
                 $response["success"] = "0";
                 $response["error"] = "Sorry, Apikey is invalid";
             } else {
-                
-                $result = $db->getGodTags($tag_type);
+                $result = $db->getGodTags();
                 
                 if (count($result) > 0 && !empty($result)) {
                     $response["success"] = "1";
@@ -966,16 +1116,16 @@ function verifyRequiredParams($required_fields,$api = null) {
 // ----------------- START Images API ----------------- //
     
     $app->post('/get_punjabi_images', function() use ($app) {
-      
         // check for required params
         $response = array();
         $headers = apache_request_headers();
         
+        $response = array();
         $response["success"] = "0";
         $response["error"] = "";
         $response["count"] = 0;
         $response['images'] = array();
-      
+        
         if (isset($headers['Apikey'])) {
             
             $apikey = $headers['Apikey'];
@@ -987,13 +1137,13 @@ function verifyRequiredParams($required_fields,$api = null) {
             if($app->request->post('limit')) {
                 $limit = $app->request->post('limit');
             } else {
-                $limit = 20;
+                $limit = 10;
             }
 
-            if($app->request->post('page')) {
-                $page = $app->request->post('page');
+            if($app->request->post('offset')) {
+                $offset = $app->request->post('offset');
             } else {
-                $page = 1;
+                $offset = 0;
             }
 
             if($app->request->post('order_field')) {
@@ -1039,14 +1189,14 @@ function verifyRequiredParams($required_fields,$api = null) {
                     $tag_name = "";
                 }
                 $total_count = $db->getPunjabiImageCount($tag_name);
-                if ($page >= $total_count && $total_count != 0) {
+                if ($offset >= $total_count && $total_count != 0) {
                     $response["success"] = "0";
                     $response["error"] = "Sorry, Invalid value for offset";
                     $response["count"] = 0;
                     $response['data'] = array();
                 } else {
-                    $result = $db->getPunjabiImages($tag_id, $tag_name, $limit, $page, $order_field, $order);
-                   
+                    $result = $db->getPunjabiImages($tag_id, $tag_name, $limit, $offset, $order_field, $order);
+                    
                     if (count($result) > 0 && !empty($result)) {
                         $response["success"] = "1";
                         $response["count"] = (int)$total_count;
@@ -1072,11 +1222,12 @@ function verifyRequiredParams($required_fields,$api = null) {
         $response = array();
         $headers = apache_request_headers();
         
+        $response = array();
         $response["success"] = "0";
         $response["error"] = "";
         $response["count"] = 0;
         $response['images'] = array();
-      
+        
         if (isset($headers['Apikey'])) {
             
             $apikey = $headers['Apikey'];
@@ -1088,13 +1239,13 @@ function verifyRequiredParams($required_fields,$api = null) {
             if($app->request->post('limit')) {
                 $limit = $app->request->post('limit');
             } else {
-                $limit = 20;
+                $limit = 10;
             }
 
-            if($app->request->post('page')) {
-                $page = $app->request->post('page');
+            if($app->request->post('offset')) {
+                $offset = $app->request->post('offset');
             } else {
-                $page = 1;
+                $offset = 0;
             }
 
             if($app->request->post('order_field')) {
@@ -1133,21 +1284,21 @@ function verifyRequiredParams($required_fields,$api = null) {
                     
                     $tag_data = $db->getGodTagInfo($tag_id);
                     if(!empty($tag_data)) {
-                        $tag_name = $tag_data["name"];
+                        $tag_name = $tag_data["tag"];
                     }
                     
                 } else {
                     $tag_name = "";
                 }
                 $total_count = $db->getGodImageCount($tag_name);
-                if ($page >= $total_count && $total_count != 0) {
+                if ($offset >= $total_count && $total_count != 0) {
                     $response["success"] = "0";
                     $response["error"] = "Sorry, Invalid value for offset";
                     $response["count"] = 0;
                     $response['data'] = array();
                 } else {
-                    $result = $db->getGodImages($tag_id, $tag_name, $limit, $page, $order_field, $order);
-                   
+                    $result = $db->getGodImages($tag_id, $tag_name, $limit, $offset, $order_field, $order);
+                    
                     if (count($result) > 0 && !empty($result)) {
                         $response["success"] = "1";
                         $response["count"] = (int)$total_count;
@@ -1167,6 +1318,334 @@ function verifyRequiredParams($required_fields,$api = null) {
         }
         echoRespnse(200, $response);
     });
+    
+    $app->post('/get_punjabi_images_related', function() use ($app) {
+        // check for required params
+        verifyRequiredParams(array('tag_id','app_code'));
+        $response = array();
+        $headers = apache_request_headers();
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        $response["count"] = 0;
+        $response['data'] = "";
+        if (isset($headers['Apikey'])) {
+            
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+            
+            $tag_id = $app->request->post('tag_id');
+            $app_code = $app->request->post('app_code');
+            
+            if($app->request->post('limit')) {
+                $limit = $app->request->post('limit');
+            } else {
+                $limit = 30;
+            }
+            
+            $tag_data = $db->getPunjabiTagInfo($tag_id);
+            
+            if(!empty($tag_data)) {
+                $tag_name = $tag_data["tag"];
+                $res = $db->isValidApi($apikey, $app_code);
+                if (!$res->num_rows > 0) {
+                    $response["success"] = "0";
+                    $response["error"] = "Sorry, Apikey is invalid";
+                    $response["count"] = 0;
+                    $response['data'] = [];
+                } else {
+                    // Limit Offset
+                    $total_count = $db->getPunjabiImageCount($tag_name);
+                    $result = $db->getPunjabiRelatedImages($tag_id, $tag_name, $limit);
+                    
+                    if (count($result) > 0 && !empty($result)) {
+                        $response["success"] = "1";
+                        $response["count"] = (int)$total_count;
+                        $response['data'] = $result;
+                    } else {
+                        $response["success"] = "0";
+                        $response["error"] = "Data Not Available.";
+                        $response['data'] = [];
+                    }
+                }
+            } else {
+                $response["success"] = "0";
+                $response["error"] = "Invalid tag_id.";
+                $response['data'] = [];
+            }
+
+        } else {
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+            $response['data'] = [];
+        }
+        echoRespnse(200, $response);
+    });
+    
+    $app->post('/get_god_images_related', function() use ($app) {
+        // check for required params
+        verifyRequiredParams(array('tag_id','app_code'));
+        $response = array();
+        $headers = apache_request_headers();
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        $response["count"] = 0;
+        $response['data'] = "";
+        if (isset($headers['Apikey'])) {
+            
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+            
+            $tag_id = $app->request->post('tag_id');
+            $app_code = $app->request->post('app_code');
+            
+            if($app->request->post('limit')) {
+                $limit = $app->request->post('limit');
+            } else {
+                $limit = 30;
+            }
+            
+            $tag_data = $db->getGodTagInfo($tag_id);
+            
+            if(!empty($tag_data)) {
+                $tag_name = $tag_data["name"];
+                $res = $db->isValidApi($apikey, $app_code);
+                if (!$res->num_rows > 0) {
+                    $response["success"] = "0";
+                    $response["error"] = "Sorry, Apikey is invalid";
+                    $response["count"] = 0;
+                    $response['data'] = [];
+                } else {
+                    // Limit Offset
+                    $total_count = $db->getGodImageCount($tag_name);
+                    $result = $db->getGodRelatedImages($tag_id, $tag_name, $limit);
+                    
+                    if (count($result) > 0 && !empty($result)) {
+                        $response["success"] = "1";
+                        $response["count"] = (int)$total_count;
+                        $response['data'] = $result;
+                    } else {
+                        $response["success"] = "0";
+                        $response["error"] = "Data Not Available.";
+                        $response['data'] = [];
+                    }
+                }
+            } else {
+                $response["success"] = "0";
+                $response["error"] = "Invalid tag_id.";
+                $response['data'] = [];
+            }
+
+        } else {
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+            $response['data'] = [];
+        }
+        echoRespnse(200, $response);
+    });
+    
+    $app->post('/get_punjabi_image_search',function() use ($app) {
+        $response = array();
+        
+        verifyRequiredParams(array('search', 'app_code'));
+        $search = $app->request->post('search');
+        $app_code = $app->request->post('app_code');
+        
+        $headers = apache_request_headers();
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        $response["count"] = 0;
+        $response['data'] = array();
+        if (isset($headers['Apikey'])) {
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+            $res = $db->isValidApi($apikey, $app_code);
+            if (!$res->num_rows > 0) {
+                $response["success"] = "0";
+                $response["error"] = "Sorry, Apikey is invalid";
+                $response["count"] = 0;
+                $response['data'] = array();
+            } else {
+                $total_count = $db->getPunjabiImageSearchCount($search);
+                $result = $db->searchPunjabiImage($search);
+                if (count($result) > 0 && !empty($result)) {
+                    $response["success"] = "1";
+                    $response["count"] = (int)$total_count;
+                    $response['data'] = $result;
+                } else {
+                    $response["success"] = "0";
+                    $response["error"] = "Data Not Available.";
+                    $response["count"] = (int)$total_count;
+                    $response['data'] = array();
+                }
+            }
+        } else {
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+        }
+        echoRespnse(200, $response);
+    }); 
+    
+    $app->post('/get_god_image_search',function() use ($app) {
+        $response = array();
+        
+        verifyRequiredParams(array('search', 'app_code'));
+        $search = $app->request->post('search');
+        $app_code = $app->request->post('app_code');
+        
+        $headers = apache_request_headers();
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        $response["count"] = 0;
+        $response['data'] = array();
+        if (isset($headers['Apikey'])) {
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+            $res = $db->isValidApi($apikey, $app_code);
+            if (!$res->num_rows > 0) {
+                $response["success"] = "0";
+                $response["error"] = "Sorry, Apikey is invalid";
+                $response["count"] = 0;
+                $response['data'] = array();
+            } else {
+                
+                $total_count = $db->getGodImageSearchCount($search);
+                $result = $db->searchGodImage($search);
+                
+                if (count($result) > 0 && !empty($result)) {
+                    $response["success"] = "1";
+                    $response["count"] = (int)$total_count;
+                    $response['data'] = $result;
+                } else {
+                    $response["success"] = "0";
+                    $response["error"] = "Data Not Available.";
+                    $response["count"] = (int)$total_count;
+                    $response['data'] = array();
+                }
+            }
+        } else {
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+        }
+        echoRespnse(200, $response);
+    }); 
+    
+    $app->post('/get_punjabi_images_update_count',function() use ($app) {
+        $response = array();
+        $headers = apache_request_headers();
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        if (isset($headers['Apikey'])) {
+            
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+            $app_code = $app->request->post('app_code');
+            $res = $db->isValidApi($apikey,$app_code);
+            
+            if (!$res->num_rows > 0) {
+                $response["success"] = "0";
+                $response["error"] = "invalid Apikey";
+            } else {
+                if($app->request->post('views')) {
+                    
+                    $view = $app->request->post('views');
+                    $views = $db->updatePunjabiImageViews($view);
+                    
+                    if($views == 0) {
+                        $response["success"] = "0";
+                        $response["error"] = "no video found";
+                        $response["views"] = null;
+                    } else {
+                        $response["success"] = "1";
+                        $response["error"] = "";
+                        $response["views"] = $views;
+                    }
+                } else if($app->request->post('downloads')) {
+                    
+                    $download = $app->request->post('downloads');
+                    $downloads = $db->updatePunjabiImageDownloads($download);
+                    
+                    if($downloads == 0) {
+                        $response["success"] = "0";
+                        $response["error"] = "no record found";
+                        $response["downloads"] = null;
+                    } else {
+                        $response["success"] = "1";
+                        $response["error"] = "";
+                        $response["downloads"] = $downloads;
+                    }                
+                } else {
+                    $response["success"] = "0";
+                    $response["error"] = "parameter views/downloads missing";
+                }
+            }
+        } else {
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+        }
+        echoRespnse(200, $response);
+    }); 
+    
+    $app->post('/get_god_images_update_count',function() use ($app) {
+        $response = array();
+        $headers = apache_request_headers();
+        $response = array();
+        $response["success"] = "0";
+        $response["error"] = "";
+        if (isset($headers['Apikey'])) {
+            
+            $apikey = $headers['Apikey'];
+            $db = new DbHandler();
+            $app_code = $app->request->post('app_code');
+            $res = $db->isValidApi($apikey,$app_code);
+            
+            if (!$res->num_rows > 0) {
+                $response["success"] = "0";
+                $response["error"] = "invalid Apikey";
+            } else {
+                if($app->request->post('views')) {
+                    
+                    $view = $app->request->post('views');
+                    $views = $db->updateGodImageViews($view);
+                    
+                    if($views == 0) {
+                        $response["success"] = "0";
+                        $response["error"] = "no video found";
+                        $response["views"] = null;
+                    } else {
+                        $response["success"] = "1";
+                        $response["error"] = "";
+                        $response["views"] = $views;
+                    }
+                } else if($app->request->post('downloads')) {
+                    
+                    $download = $app->request->post('downloads');
+                    $downloads = $db->updateGodImageDownloads($download);
+                    
+                    if($downloads == 0) {
+                        $response["success"] = "0";
+                        $response["error"] = "no record found";
+                        $response["downloads"] = null;
+                    } else {
+                        $response["success"] = "1";
+                        $response["error"] = "";
+                        $response["downloads"] = $downloads;
+                    }                
+                } else {
+                    $response["success"] = "0";
+                    $response["error"] = "parameter views/downloads missing";
+                }
+            }
+        } else {
+            $response["success"] = "0";
+            $response["error"] = "Apikey is missing";
+        }
+        echoRespnse(200, $response);
+    }); 
     
 // ----------------- END Images API ----------------- //
 
